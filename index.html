@@ -205,14 +205,19 @@
         let used = JSON.parse(localStorage.getItem('usedQ') || '[]');
 
 let available = data.filter(q => !used.includes(q.q));
+let wrong = JSON.parse(localStorage.getItem('wrongQ') || '[]');
 
+// نأخذ 3 أسئلة من الأخطاء
+let review = wrong.sort(() => Math.random() - 0.5).slice(0, 3);
 // إذا خلصت الأسئلة → إعادة ضبط
 if (available.length < 10) {
     used = [];
     available = [...data];
 }
 
-current = available.sort(() => Math.random() - 0.5).slice(0, 10);
+current = [...review, ...available]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 10);
 
 // حفظ الأسئلة المستخدمة
 used.push(...current.map(q => q.q));
@@ -261,6 +266,9 @@ window.currentOptions = options;
             score++;
             buttons[i].classList.add('correct');
         } else {
+            let wrong = JSON.parse(localStorage.getItem('wrongQ') || '[]');
+wrong.push(current[idx]);
+localStorage.setItem('wrongQ', JSON.stringify(wrong));
             buttons[i].classList.add('wrong');
             buttons[correct].classList.add('correct');
         }
