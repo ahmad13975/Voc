@@ -220,16 +220,27 @@
 
         document.getElementById('next').style.display = 'none';
 
-        let html = "";
-        q.a.forEach((opt, i) => {
-            html += `<button class="opt" onclick="sel(${i})">${opt}</button>`;
-        });
+        let options = q.a.map((text, i) => ({
+    text: text,
+    correct: i === q.c
+}));
+
+options = options.sort(() => Math.random() - 0.5);
+
+let html = "";
+options.forEach((opt, i) => {
+    html += `<button class="opt" onclick="sel(${i})">${opt.text}</button>`;
+});
+
+document.getElementById('opts').innerHTML = html;
+
+window.currentOptions = options;
 
         document.getElementById('opts').innerHTML = html;
     }
 
     function sel(i) {
-        const correct = current[idx].c;
+        const correct = window.currentOptions.findIndex(o => o.correct);
         const buttons = document.getElementsByClassName('opt');
 
         if (i === correct) {
