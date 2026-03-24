@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocab Practice</title>
+
+    <style>
+        :root {
+            --primary: #007aff;
+            --bg: #f2f2f7;
+            --card-bg: #ffffff;
+            --text: #1c1c1e;
+            --success: #34c759;
+            --danger: #ff3b30;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            margin: 0;
+            color: var(--text);
+        }
+
+        header {
+            background: white;
+            padding: 16px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+        }
+
+        .opt {
+            background: #f0f0f5;
+            color: black;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .correct {
+            background: var(--success) !important;
+            color: white;
+        }
+
+        .wrong {
+            background: var(--danger) !important;
+            color: white;
+        }
+
+        #quiz, #res {
+            display: none;
+        }
+
+        .hist {
+            font-size: 30px;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>Vocab Practice</header>
+
+<div class="container">
+
+    <div id="main">
+        <div class="card">
+            <h2>Vocabulary Test</h2>
+            <p>10 Random questions based on your file.</p>
+            <button onclick="go()">Start Test</button>
+        </div>
+
+        <div class="card">
+            <h3>History</h3>
+            <div id="h-list" class="hist">0</div>
+        </div>
+    </div>
+
+    <div id="quiz">
+        <div class="card">
+            <div id="stat" style="text-align:right; font-size:12px; color:gray;"></div>
+            <h3 id="q-txt"></h3>
+            <div id="opts"></div>
+            <button id="next" style="display:none; background:#555;" onclick="doNext()">Next</button>
+        </div>
+    </div>
+
+    <div id="res">
+        <div class="card" style="text-align:center;">
+            <h2>Finish!</h2>
+            <h1 id="total" style="font-size:50px; color:var(--primary);"></h1>
+            <button onclick="location.reload()">Return Home</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    // Data
+    const data = [
+        { q: "The word “flame” in paragraph (3) is closest in meaning to:", a: ["Feeling", "Light", "Fire", "Heat"], c: 2 },
+        { q: "What word other than “misbehave” does the writer use for aggressive behavior?", a: ["React", "Act out", "Protest", "Oppose"], c: 1 },
+        { q: "Which word can replace “So” in paragraph (3)?", a: ["Though", "Therefore", "Afterwards", "However"], c: 2 },
+        { q: "The word “rapid” in paragraph (3) is closest in meaning to:", a: ["Sudden", "Quick", "Immediate", "Brief"], c: 1 },
+        { q: "The word “chief” in paragraph (3) is closest in meaning to:", a: ["First", "Main", "Leading", "Important"], c: 1 },
+        { q: "The word “comprehensive” in the passage is closest in meaning to:", a: ["Wide", "Detailed", "Complete", "General"], c: 2 },
+        { q: "The word “ideally” in the passage is closest in meaning to:", a: ["Properly", "Normally", "Perfectly", "Carefully"], c: 2 },
+        { q: "The word “abandoned” in the passage is closest in meaning to:", a: ["Left", "Ignored", "Stopped", "Lost"], c: 2 },
+        { q: "The word “far-fetched” in paragraph (1) is closest in meaning to:", a: ["Unrealistic", "Difficult to believe", "Illogical", "Unclear"], c: 1 },
+        { q: "Which expression can replace “for example” in paragraph (3)?", a: ["Such as", "As a result", "For instance", "In fact"], c: 2 },
+        { q: "The word “reports” in paragraph (2) is closest in meaning to:", a: ["Articles", "Stories", "Statements", "Claims"], c: 1 },
+        { q: "The word “currency” in paragraph (2) is closest in meaning to:", a: ["Trade", "Cash", "Income", "Payment"], c: 1 },
+        { q: "The word “slab” in the passage is closest in meaning to:", a: ["Piece", "Block", "Chunk", "Layer"], c: 2 },
+        { q: "The word “unites” in the passage is closest in meaning to:", a: ["Mixes", "Combines", "Connects", "Joins"], c: 1 },
+        { q: "The word “unstable” in the passage is closest in meaning to:", a: ["Weak", "Loose", "Fragile", "Shaky"], c: 1 },
+        { q: "The word “greedy” in paragraph (1) means wanting:", a: ["Power", "More", "Money", "Control"], c: 1 },
+        { q: "Which expression can replace “due to” in paragraph (2)?", a: ["Because of", "As a result", "Owing", "Since"], c: 0 },
+        { q: "The word “far-fetched” in paragraph (1) is closest in meaning to:", a: ["Strange", "Difficult to believe", "Unreal", "Confusing"], c: 1 },
+        { q: "The word “obtaining” in paragraph (1) is closest in meaning to:", a: ["Receiving", "Getting", "Taking", "Collecting"], c: 1 },
+        { q: "The word “negotiations” in paragraph (2) is closest in meaning to:", a: ["Arguments", "Discussions", "Meetings", "Deals"], c: 1 },
+        { q: "The word “booked” in paragraph (1) is closest in meaning to:", a: ["Reserved", "Registered", "Ordered", "Planned"], c: 1 },
+        { q: "The word “probable” in paragraph (1) is closest in meaning to:", a: ["Possible", "Reasonable", "Suspicious", "Expected"], c: 1 },
+        { q: "The word “inconvenience” in paragraph (4) is closest in meaning to:", a: ["Problem", "Trouble", "Difficulty", "Bad luck"], c: 1 },
+        { q: "Which word can replace “Although” in paragraph (4)?", a: ["However", "While", "Despite", "Yet"], c: 1 },
+        { q: "The word “generally” in paragraph (4) is closest in meaning to:", a: ["Commonly", "Usually", "Normally", "Often"], c: 1 },
+        { q: "The word “reported” in paragraph (1) is closest in meaning to:", a: ["Announced", "Described", "Stated", "Explained"], c: 1 },
+        { q: "The word “undergoing” is closest in meaning to:", a: ["Experiencing", "Facing", "Passing", "Enduring"], c: 0 },
+        { q: "The word “liability” in paragraph (1) is closest in meaning to:", a: ["Crime", "Fault", "Responsibility", "Risk"], c: 1 },
+        { q: "Which word can replace “While” in paragraph (2)?", a: ["Besides", "Although", "Whereas", "During"], c: 1 },
+        { q: "The word “reduction” in paragraph (4) is closest in meaning to:", a: ["Decrease", "Fall", "Drop", "Decline"], c: 1 }
+    ];
+
+    let current = [];
+    let idx = 0;
+    let score = 0;
+
+    function go() {
+        current = data.sort(() => Math.random() - 0.5).slice(0, 10);
+        idx = 0;
+        score = 0;
+
+        document.getElementById('main').style.display = 'none';
+        document.getElementById('quiz').style.display = 'block';
+
+        load();
+    }
+
+    function load() {
+        const q = current[idx];
+
+        document.getElementById('stat').innerText = `Question ${idx + 1} / 10`;
+        document.getElementById('q-txt').innerText = q.q;
+
+        document.getElementById('next').style.display = 'none';
+
+        let html = "";
+        q.a.forEach((opt, i) => {
+            html += `<button class="opt" onclick="sel(${i})">${opt}</button>`;
+        });
+
+        document.getElementById('opts').innerHTML = html;
+    }
+
+    function sel(i) {
+        const correct = current[idx].c;
+        const buttons = document.getElementsByClassName('opt');
+
+        if (i === correct) {
+            score++;
+            buttons[i].classList.add('correct');
+        } else {
+            buttons[i].classList.add('wrong');
+            buttons[correct].classList.add('correct');
+        }
+
+        for (let b of buttons) b.onclick = null;
+
+        document.getElementById('next').style.display = 'block';
+    }
+
+    function doNext() {
+        idx++;
+        if (idx < 10) load();
+        else done();
+    }
+
+    function done() {
+        document.getElementById('quiz').style.display = 'none';
+        document.getElementById('res').style.display = 'block';
+
+        document.getElementById('total').innerText = `${score}/10`;
+
+        let history = JSON.parse(localStorage.getItem('vH') || '[]');
+
+        // نضيف عنصر جديد فقط لزيادة العدد
+        history.unshift({});
+
+        localStorage.setItem('vH', JSON.stringify(history));
+    }
+
+    // Load History
+    const history = JSON.parse(localStorage.getItem('vH') || '[]');
+
+    document.getElementById('h-list').innerText = history.length;
+
+</script>
+
+</body>
+</html>
