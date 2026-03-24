@@ -202,7 +202,21 @@
     let score = 0;
 
     function go() {
-        current = data.sort(() => Math.random() - 0.5).slice(0, 10);
+        let used = JSON.parse(localStorage.getItem('usedQ') || '[]');
+
+let available = data.filter(q => !used.includes(q.q));
+
+// إذا خلصت الأسئلة → إعادة ضبط
+if (available.length < 10) {
+    used = [];
+    available = [...data];
+}
+
+current = available.sort(() => Math.random() - 0.5).slice(0, 10);
+
+// حفظ الأسئلة المستخدمة
+used.push(...current.map(q => q.q));
+localStorage.setItem('usedQ', JSON.stringify(used));
         idx = 0;
         score = 0;
 
