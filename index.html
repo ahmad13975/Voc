@@ -1,96 +1,31 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocab Practice</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocab Practice</title>
 
-    <style>
-        :root {
-            --primary: #007aff;
-            --bg: #f2f2f7;
-            --card-bg: #ffffff;
-            --text: #1c1c1e;
-            --success: #34c759;
-            --danger: #ff3b30;
-        }
-
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, sans-serif;
-        }
-
-        body {
-            background: var(--bg);
-            margin: 0;
-            color: var(--text);
-        }
-
-        header {
-            background: white;
-            padding: 16px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .container {
-            padding: 16px;
-            max-width: 500px;
-            margin: auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            background: var(--primary);
-            color: white;
-        }
-
-        .opt {
-            background: #f0f0f5;
-            color: black;
-            text-align: left;
-            margin-bottom: 8px;
-        }
-
-        .correct {
-            background: var(--success) !important;
-            color: white;
-        }
-
-        .wrong {
-            background: var(--danger) !important;
-            color: white;
-        }
-
-        #quiz, #res {
-            display: none;
-        }
-
-        .hist {
-            font-size: 30px;
-            text-align: center;
-            font-weight: bold;
-            padding: 20px 0;
-        }
-    </style>
+<style>
+:root {
+    --primary: #007aff;
+    --bg: #f2f2f7;
+    --card-bg: #ffffff;
+    --text: #1c1c1e;
+    --success: #34c759;
+    --danger: #ff3b30;
+}
+* { box-sizing: border-box; font-family: -apple-system, sans-serif; }
+body { background: var(--bg); margin: 0; color: var(--text); }
+header { background: white; padding: 16px; text-align: center; font-weight: bold; border-bottom: 1px solid #ddd; }
+.container { padding: 16px; max-width: 500px; margin: auto; }
+.card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+button { width: 100%; padding: 15px; margin-top: 10px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; background: var(--primary); color: white; }
+.opt { background: #f0f0f5; color: black; text-align: left; margin-bottom: 8px; }
+.correct { background: var(--success) !important; color: white; }
+wrong { background: var(--danger) !important; color: white; }
+#quiz, #res { display: none; }
+.hist { font-size: 30px; text-align: center; font-weight: bold; padding: 20px 0; }
+</style>
 </head>
 
 <body>
@@ -99,157 +34,137 @@
 
 <div class="container">
 
-    <div id="main">
-        <div class="card">
-            <h2>Vocabulary Test</h2>
-            <p>10 Random questions based on your file.</p>
-            <button onclick="go()">Start Test</button>
-        </div>
+<div id="main">
+<div class="card">
+<h2>Vocabulary Test</h2>
+<p>10 Random questions based on your file.</p>
+<button onclick="go()">Start Test</button>
+</div>
 
-        <div class="card">
-            <h3>History</h3>
-            <div id="h-list" class="hist">0</div>
-        </div>
-    </div>
+<div class="card">
+<h3>History</h3>
+<div id="h-list" class="hist">0</div>
+</div>
+</div>
 
-    <div id="quiz">
-        <div class="card">
-            <div id="stat" style="text-align:right; font-size:12px; color:gray;"></div>
-            <h3 id="q-txt"></h3>
-            <div id="opts"></div>
-            <button id="next" style="display:none; background:#555;" onclick="doNext()">Next</button>
-        </div>
-    </div>
+<div id="quiz">
+<div class="card">
+<div id="stat" style="text-align:right; font-size:12px; color:gray;"></div>
+<h3 id="q-txt"></h3>
+<div id="opts"></div>
+<button id="next" style="display:none; background:#555;" onclick="doNext()">Next</button>
+</div>
+</div>
 
-    <div id="res">
-        <div class="card" style="text-align:center;">
-            <h2>Finish!</h2>
-            <h1 id="total" style="font-size:50px; color:var(--primary);"></h1>
-            <button onclick="location.reload()">Return Home</button>
-        </div>
-    </div>
+<div id="res">
+<div class="card" style="text-align:center;">
+<h2>Finish!</h2>
+<h1 id="total" style="font-size:50px; color:var(--primary);"></h1>
+<button onclick="location.reload()">Return Home</button>
+</div>
+</div>
 
 </div>
 
 <script>
 
 const data = [
+{q:"The word ‘lacking’ is closest in meaning to:",a:["changing","missing","existing","removing"],c:1},
+{q:"The word ‘acidic’ is closest in meaning to:",a:["toxic","salty","bitter","healthy"],c:0},
+{q:"The word ‘polluting’ is closest in meaning to:",a:["clearing","killing","protecting","harming"],c:3},
+{q:"The word ‘aquatic’ is closest in meaning to:",a:["wildfire","ocean","earth","land"],c:1},
+{q:"The word ‘perplexed’ is closest in meaning to:",a:["interested","confused","unhappy","shocked"],c:1},
+{q:"The word ‘legitimate’ is closest in meaning to:",a:["known","acceptable","professional","corporate"],c:1},
+{q:"The word ‘random’ is closest in meaning to:",a:["unplanned","different","difficult","negative"],c:0},
+{q:"The word ‘extracted’ is closest in meaning to:",a:["checked","took","tasted","boiled"],c:1},
+{q:"The word ‘agricultural’ is closest in meaning to:",a:["building","energy","farming","tourism"],c:2},
+{q:"The word ‘assumed’ is closest in meaning to:",a:["took","threw","posited","suspected"],c:0},
 
-{ q: "The word cartographer in Paragraph 3 meaning to:", a: ["ship maker","map maker","navigator","sailor"], c: 1 },
-{ q: "The word unscheduled in the passage is closest in meaning to:", a: ["NOT planned","NOT timed","extra","long"], c: 0 },
-{ q: "The word carved in Paragraph 1 is closest in meaning to:", a: ["sourced","planned","shaped","copied"], c: 2 },
-{ q: "The words mutual intelligibility in Paragraph 3 are closest in meaning to:", a: ["uncertainty","difference","similarity","matching"], c: 2 },
-{ q: "The word expedition in Paragraph 1 is closest in meaning to:", a: ["life","invention","experience","journey"], c: 3 },
-{ q: "The word equilibrium in the passage is closest in meaning to:", a: ["equality","pressure","airflow","balance"], c: 3 },
-{ q: "The word location in the passage is closest in meaning to:", a: ["bus","view","place","shopping"], c: 2 },
-{ q: "The word leisure in the passage is closest in meaning to:", a: ["free","ease","holiday","relaxation"], c: 0 },
-{ q: "The word risks in Paragraph 1 is closest in meaning to:", a: ["decisions","dangers","choices","loans"], c: 1 },
-{ q: "The word crucial in Paragraph 2 is closest in meaning to:", a: ["fair","difficult","important","complicated"], c: 2 },
+{q:"The word ‘premature’ is closest in meaning to:",a:["final","late","early","developing"],c:2},
+{q:"The word ‘plunge’ is closest in meaning to:",a:["launch","elevate","invite","explode"],c:0},
+{q:"The word ‘alarming’ is closest in meaning to:",a:["confusing","frightening","confusing","frustrating"],c:1},
+{q:"The word ‘hike’ is closest in meaning to:",a:["report","decrease","increase","improve"],c:2},
+{q:"The word ‘purchase’ is closest in meaning to:",a:["buy","find","sell","borrow"],c:0},
+{q:"The word ‘vacant’ is closest in meaning to:",a:["empty","for sale","destroyed","being built"],c:0},
+{q:"The word ‘identify’ is closest in meaning to:",a:["name","destroy","relax","sell"],c:0},
+{q:"The word ‘major’ is closest in meaning to:",a:["important","basic","tiny","secondary"],c:0},
+{q:"The word ‘far-fetched’ is closest in meaning to:",a:["difficult to believe","easy to believe","definite","clear"],c:0},
+{q:"The word ‘indigenous’ is closest in meaning to:",a:["average","foreign","native","rare"],c:2},
 
-// باقي الأسئلة كما هي بدون تغيير
+{q:"The phrase ‘broken out’ is closest in meaning to:",a:["spread","started","cracked","destroyed"],c:1},
+{q:"The word ‘shelter’ is closest in meaning to:",a:["danger","food","issue","protection"],c:3},
+{q:"The word ‘proficient’ is closest in meaning to:",a:["skilled","trained","dedicated","disciplined"],c:0},
+{q:"The word ‘possessions’ is closest in meaning to:",a:["income","property","equipment","achievement"],c:1},
+{q:"The word ‘traders’ is closest in meaning to:",a:["professionals","specialists","dealers","leaders"],c:2},
+{q:"The word ‘liability’ is closest in meaning to:",a:["activity","control","influence","responsibility"],c:3},
+{q:"The word ‘status’ is closest in meaning to:",a:["level","group","area","meaning"],c:0},
+{q:"The word ‘cure’ is closest in meaning to:",a:["hope","care","solution","change"],c:2},
+{q:"The word ‘minuscule’ is closest in meaning to:",a:["hot","tiny","fast","heavy"],c:1},
+{q:"The word ‘promotion’ is closest in meaning to:",a:["educational","marketing","opposite","personal"],c:1},
 
-{ q: "The word “flame” in paragraph (3) is closest in meaning to:", a: ["Feeling", "Light", "Fire", "Heat"], c: 2 },
-
+{q:"The word ‘flame’ is closest in meaning to:",a:["feeling","light","fire","heat"],c:2}
 ];
 
-let current = [];
-let idx = 0;
-let score = 0;
+let current=[],idx=0,score=0;
 
-function go() {
-let used = JSON.parse(localStorage.getItem('usedQ') || '[]');
-
-let available = data.filter(q => !used.includes(q.q));
-let wrong = JSON.parse(localStorage.getItem('wrongQ') || '[]');
-
-let review = wrong.sort(() => Math.random() - 0.5).slice(0, 3);
-
-if (available.length < 10) {
-    used = [];
-    available = [...data];
-}
-
-current = [...review, ...available]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 10);
-
-used.push(...current.map(q => q.q));
-localStorage.setItem('usedQ', JSON.stringify(used));
-
-idx = 0;
-score = 0;
-
-document.getElementById('main').style.display = 'none';
-document.getElementById('quiz').style.display = 'block';
-
+function go(){
+let used=JSON.parse(localStorage.getItem('usedQ')||'[]');
+let available=data.filter(q=>!used.includes(q.q));
+if(available.length<10){used=[];available=[...data];}
+current=available.sort(()=>Math.random()-0.5).slice(0,10);
+used.push(...current.map(q=>q.q));
+localStorage.setItem('usedQ',JSON.stringify(used));
+idx=0;score=0;
+document.getElementById('main').style.display='none';
+document.getElementById('quiz').style.display='block';
 load();
 }
 
-function load() {
-const q = current[idx];
+function load(){
+const q=current[idx];
+document.getElementById('stat').innerText=`Question ${idx+1} / 10`;
+document.getElementById('q-txt').innerText=q.q;
+document.getElementById('next').style.display='none';
 
-document.getElementById('stat').innerText = `Question ${idx + 1} / 10`;
-document.getElementById('q-txt').innerText = q.q;
+let options=q.a.map((t,i)=>({text:t,correct:i===q.c}))
+.sort(()=>Math.random()-0.5);
 
-document.getElementById('next').style.display = 'none';
-
-let options = q.a.map((text, i) => ({
-text: text,
-correct: i === q.c
-}));
-
-options = options.sort(() => Math.random() - 0.5);
-
-let html = "";
-options.forEach((opt, i) => {
-html += `<button class="opt" onclick="sel(${i})">${opt.text}</button>`;
+let html="";
+options.forEach((opt,i)=>{
+html+=`<button class="opt" onclick="sel(${i})">${opt.text}</button>`;
 });
 
-document.getElementById('opts').innerHTML = html;
-
-window.currentOptions = options;
+document.getElementById('opts').innerHTML=html;
+window.currentOptions=options;
 }
 
-function sel(i) {
-const correct = window.currentOptions.findIndex(o => o.correct);
-const buttons = document.getElementsByClassName('opt');
+function sel(i){
+const correct=window.currentOptions.findIndex(o=>o.correct);
+const buttons=document.getElementsByClassName('opt');
 
-if (i === correct) {
-    score++;
-    buttons[i].classList.add('correct');
-} else {
-    let wrong = JSON.parse(localStorage.getItem('wrongQ') || '[]');
-    wrong.push(current[idx]);
-    localStorage.setItem('wrongQ', JSON.stringify(wrong));
+if(i===correct){score++;buttons[i].classList.add('correct');}
+else{buttons[i].classList.add('wrong');buttons[correct].classList.add('correct');}
 
-    buttons[i].classList.add('wrong');
-    buttons[correct].classList.add('correct');
+for(let b of buttons)b.onclick=null;
+document.getElementById('next').style.display='block';
 }
 
-for (let b of buttons) b.onclick = null;
-
-document.getElementById('next').style.display = 'block';
-}
-
-function doNext() {
+function doNext(){
 idx++;
-if (idx < 10) load();
-else done();
+if(idx<10)load();else done();
 }
 
-function done() {
-document.getElementById('quiz').style.display = 'none';
-document.getElementById('res').style.display = 'block';
-
-document.getElementById('total').innerText = `${score}/10`;
-
-let history = JSON.parse(localStorage.getItem('vH') || '[]');
-history.unshift({});
-localStorage.setItem('vH', JSON.stringify(history));
+function done(){
+document.getElementById('quiz').style.display='none';
+document.getElementById('res').style.display='block';
+document.getElementById('total').innerText=`${score}/10`;
+let history=JSON.parse(localStorage.getItem('vH')||'[]');
+history.unshift(score);
+localStorage.setItem('vH',JSON.stringify(history));
 }
 
-const history = JSON.parse(localStorage.getItem('vH') || '[]');
-document.getElementById('h-list').innerText = history.length;
+const history=JSON.parse(localStorage.getItem('vH')||'[]');
+document.getElementById('h-list').innerText=history.length;
 
 </script>
 
